@@ -57,47 +57,70 @@ void CnHandle::initStopWords()
 }
 
 // 读取词源统计词频
-void CnHandle::readWords(const string &fileName)
-{
-    inFile.open(fileName);
-    if (!inFile)
-    {
-        cerr << "open fail" << fileName << "\n";
-        return;
-    }
-    cppjieba::Jieba jieba(DICT_PATH,
-                          HMM_PATH,
-                          USER_DICT_PATH,
-                          IDF_PATH,
-                          STOP_WORD_PATH);
-    vector<string> words;
-    string s;
-    while (getline(inFile, s))
-    {
-        jieba.Cut(s, words, true);
-        for (auto &word : words)
-        {
-            if (stopWords->find(word) == stopWords->end())
-            {
-                (*wordFreq)[word]++;
-            }
-        }
-        words.clear();
-    }
-    inFile.close();
-}
+// void CnHandle::readWords(const string &fileName)
+// {
+//     inFile.open(fileName);
+//     if (!inFile)
+//     {
+//         cerr << "open fail" << fileName << "\n";
+//         return;
+//     }
+//     vector<string> words;
+//     string s;
+//     while (getline(inFile, s))
+//     {
+//         jieba.Cut(s, words, true);
+//         for (auto &word : words)
+//         {
+//             if (stopWords->find(word) == stopWords->end())
+//             {
+//                 (*wordFreq)[word]++;
+//             }
+//         }
+//         words.clear();
+//     }
+//     inFile.close();
+// }
 
 // 生成词典文件
 void CnHandle::creatDic(const string &filePath)
 {
     initStopWords(); // 初始化停用词表
+    cppjieba::Jieba jieba(DICT_PATH,
+                          HMM_PATH,
+                          USER_DICT_PATH,
+                          IDF_PATH,
+                          STOP_WORD_PATH);
 
     // 循环读目录生成词频
-    for (const auto& entry : fs::directory_iterator(filePath)) {
-    if (entry.is_regular_file()) {
-        readWords(entry.path());
+    for (const auto &entry : fs::directory_iterator(filePath))
+    {
+        if (entry.is_regular_file())
+        {
+            string fileName = entry.path().filename();
+            inFile.open(entry.path());
+            if (!inFile)
+            {
+                cerr << "open fail" << fileName << "\n";
+                return;
+            }
+            vector<string> words;
+            string s;
+            while (getline(inFile, s))
+            {
+                jieba.Cut(s, words, true);
+                for (auto &word : words)
+                {
+                    if (stopWords->find(word) == stopWords->end())
+                    {
+                        (*wordFreq)[word]++;
+                    }
+                }
+                words.clear();
+            }
+            inFile.close();
+        }
     }
-}
     // DIR *dir = opendir(filePath.c_str());
     // if (dir == nullptr)
     // {
