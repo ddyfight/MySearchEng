@@ -13,6 +13,10 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
+#include "../jieba/simhash/cppjieba/Jieba.hpp"
+
+
+
 
 class CnHandle
 {
@@ -30,6 +34,7 @@ public:
     void creatDic(const string &fileName);
 
 private:
+
     // 使用set记录停用词
     set<string> *stopWords;
 

@@ -12,7 +12,7 @@ const char *const IDF_PATH = "../jieba/dict/idf.utf8";
 const char *const STOP_WORD_PATH = "../jieba/dict/stop_words.utf8";
 
 CnHandle::CnHandle()
-{
+{   
     stopWords = new set<string>();
     wordFreq = new unordered_map<string, int>;
 }
