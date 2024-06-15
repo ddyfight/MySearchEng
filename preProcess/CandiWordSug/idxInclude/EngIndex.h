@@ -25,9 +25,9 @@ public:
 
 private:
     //加载词典
-    vector<pair<string,int>> *src;
+    vector<pair<string,int>> src;
     //暂存索引
-    unordered_map<string,set<int>> *idx;
+    unordered_map<string,set<int>> idx;
 
     //文件输入输出流
     ifstream fin;
