@@ -1,8 +1,6 @@
 #ifndef __ENGHANDLE_H
 #define __ENGHANDLE_H
 
-using namespace std;
-
 #include "head.h"
 #include <iostream>
 #include <set>
@@ -16,27 +14,13 @@ using namespace std;
 #include <cctype>
 #include <cstdlib>
 
+using namespace std;
+
 class EngHandle
 {
 public:
-    EngHandle()
-    {
-        stopWords = new set<string>();
-        wordFreq = new map<string, int>;
-    }
-    ~EngHandle()
-    {
-        if (stopWords)
-        {
-            delete stopWords;
-            stopWords = nullptr;
-        }
-        if (wordFreq)
-        {
-            delete wordFreq;
-            wordFreq = nullptr;
-        }
-    }
+    EngHandle();
+    ~EngHandle();
 
     // 初始化停用词表
     void initStopWords();

@@ -15,7 +15,7 @@
 #include <cctype>
 #include <cstdlib>
 
-class EngHandle;
+using namespace std;
 
 class DictProducer
 {
@@ -23,20 +23,21 @@ public:
     DictProducer() {}
     ~DictProducer() {}
 
-    void createIndex();
-    void store();
+    void engHandler();
+    void cnHandler();
 
 private:
     //将词典加载到vector
-    vector<string> dic;
+    vector<string> engDic;
+    vector<string> cnDic;
 
     //根据词典生成单字索引
-    unordered_map<string, set<int>> index;
+    unordered_map<string, set<int>> eng_Index;
+    unordered_map<string, set<int>> cn_Index;
     
     //将单字索引存入文件
-    ofstream outFile;
-
-    EngHandle *handle;
+    ofstream enOutFile;
+    ofstream cnOutFile;
 };
 
 #endif

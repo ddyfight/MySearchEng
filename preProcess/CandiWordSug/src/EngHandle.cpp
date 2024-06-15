@@ -1,7 +1,27 @@
 #include "../include/EngHandle.h"
+#include "../include/head.h"
 
 using namespace std;
 
+EngHandle::EngHandle()
+{
+    stopWords = new set<string>();
+    wordFreq = new map<string, int>;
+}
+
+EngHandle::~EngHandle()
+{
+    if (stopWords)
+    {
+        delete stopWords;
+        stopWords = nullptr;
+    }
+    if (wordFreq)
+    {
+        delete wordFreq;
+        wordFreq = nullptr;
+    }
+}
 void EngHandle::initStopWords()
 {
     inFile.open("../Statics/stop_words_eng.txt");
@@ -16,12 +36,12 @@ void EngHandle::initStopWords()
         stopWords->insert(word);
     }
 
-    #if 0
+#if 0
     for (auto &stopWord : *stopWords)
     {
         cout << stopWord << endl;
     }
-    #endif
+#endif
 
     inFile.close();
 };
@@ -30,7 +50,7 @@ void EngHandle::initStopWords()
 void EngHandle::readWords(const string &fileName)
 {
     // 打开文件
-    ifstream inFile(fileName);
+    inFile.open(fileName);
     if (!inFile)
     {
         std::cerr << "Error opening input file." << std::endl;
@@ -44,8 +64,8 @@ void EngHandle::readWords(const string &fileName)
         string temp;
         // 去除停用词
         if (stopWords->find(word) != stopWords->end())
-        {   
-            //cout<<"delete: "<<word<<"\n";
+        {
+            // cout<<"delete: "<<word<<"\n";
             continue;
         }
 
@@ -68,17 +88,17 @@ void EngHandle::readWords(const string &fileName)
 
 // 生成词典文件
 void EngHandle::creatDic(const string &fileName)
-{   
+{
     initStopWords();
     readWords(fileName);
     outFile.open("../Statics/EngDictionary.txt");
     if (!outFile)
     {
-        cerr << "Error opening file " << fileName << endl;
+        cerr << "Error opening file " << fileName <<"\n";
     }
     for (auto &elem : *wordFreq)
     {
-        outFile << elem.first << " " << elem.second << endl;
+        outFile << elem.first << " " << elem.second <<"\n";
     }
     outFile.close();
 };
